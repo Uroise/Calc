@@ -10,11 +10,11 @@ namespace Calc
         private string operation = "";
         private bool operationPressed = false;
         private string num1, num2;
-        private int buttonClicked = 0;
 
         public Form1()
         {
             InitializeComponent();
+            // Have the visibility false in the form otherwise the button will always be visible untill it was clicked, which makes it look like the button is inconsistent
             ButtonBin.Visible = false;
         }
 
@@ -256,14 +256,14 @@ namespace Calc
             ButtonCE.BackColor = Color.FromArgb(19, 19, 19);
         }
 
-        private void ButtonModulo_MouseEnter(object sender, EventArgs e)
+        private void ButtonPercent_MouseEnter(object sender, EventArgs e)
         {
-            ButtonModulo.BackColor = Color.FromArgb(52, 52, 52);
+            ButtonPercent.BackColor = Color.FromArgb(52, 52, 52);
         }
 
-        private void ButtonModulo_MouseLeave(object sender, EventArgs e)
+        private void ButtonPercent_MouseLeave(object sender, EventArgs e)
         {
-            ButtonModulo.BackColor = Color.FromArgb(19, 19, 19);
+            ButtonPercent.BackColor = Color.FromArgb(19, 19, 19);
         }
 
         private void ButtonBin_MouseEnter(object sender, EventArgs e)
@@ -319,6 +319,7 @@ namespace Calc
 
         #endregion Mouse enter/Mouse leave
 
+        
         private void Numbers_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
@@ -330,7 +331,7 @@ namespace Calc
                 operationPressed = false;
             }
             // Want to check if the text of the button is a decimal
-            else if (b.Text == ".")
+            else if (b.Text == "." && TextDisplay.Text == "0")
             {
                 // if the text of the button is a decimal then this if-statement checks whether the display already contains a decimal or not
                 // if the dispaly does not contain a decimal then a decimal can be added
@@ -345,7 +346,7 @@ namespace Calc
                 TextDisplay.Text = TextDisplay.Text + b.Text;
             }
         }
-
+        #region operations
         private void BasicOperations_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
@@ -376,26 +377,19 @@ namespace Calc
                 ButtonEqual.PerformClick();
                 operationPressed = true;
                 operation = b.Text;
-                
+
             }
             operation = b.Text;
-            result= double.Parse(TextDisplay.Text);
+            result = double.Parse(TextDisplay.Text);
             operationPressed = true;
             num1 = TextDisplay.Text;
-            if (b.Text == "√")
+            if (b.Text != "")
             {
                 ButtonEqual.PerformClick();
             }
-            if (b.Text == "x²")
-            {
-                ButtonEqual.PerformClick();
-            }
-            if (b.Text == "1/x")
-            {
-                ButtonEqual.PerformClick();
-            }
-            
+
         }
+        #endregion
         private void ButtonCE_Click(object sender, EventArgs e)
         {
             // Clears entry
@@ -437,7 +431,7 @@ namespace Calc
 
             // Region
 
-            #region operations
+            #region switch statement
 
             switch (operation)
             {
@@ -467,6 +461,9 @@ namespace Calc
 
                 case "1/x":
                     TextDisplay.Text = Operations.OneThroughX(double.Parse(TextDisplay.Text)).ToString();
+                    break;
+                case "%":
+                    TextDisplay.Text = Operations.Percent(double.Parse(TextDisplay.Text)).ToString();
                     break;
 
                 default:
@@ -500,6 +497,12 @@ namespace Calc
                 HistoryBox.AppendText(LabelEquation.Text + "\n");
                 HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
             }
+            else if (LabelEquation.Text.Contains("%"))
+            {
+                LabelEquation.Text = num2 + "/(100) =";
+                HistoryBox.AppendText(LabelEquation.Text + "\n");
+                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
+            }
             // Otherwise appends normal equation
             else
             {
@@ -527,8 +530,6 @@ namespace Calc
                 TextDisplay.Text = "0";
             }
         }
-
-
 
 
         #region Keyboard inputs
@@ -607,7 +608,6 @@ namespace Calc
         }
 
         #endregion Keyboard inputs
-
 
     }
 }

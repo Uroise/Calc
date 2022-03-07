@@ -38,7 +38,7 @@
             this.Button7 = new System.Windows.Forms.Button();
             this.Button8 = new System.Windows.Forms.Button();
             this.Button9 = new System.Windows.Forms.Button();
-            this.ButtonModulo = new System.Windows.Forms.Button();
+            this.ButtonPercent = new System.Windows.Forms.Button();
             this.ButtonCE = new System.Windows.Forms.Button();
             this.ButtonC = new System.Windows.Forms.Button();
             this.ButtonBackSpace = new System.Windows.Forms.Button();
@@ -243,21 +243,22 @@
             this.Button9.MouseEnter += new System.EventHandler(this.Button9_MouseEnter);
             this.Button9.MouseLeave += new System.EventHandler(this.Button9_MouseLeave);
             // 
-            // ButtonModulo
+            // ButtonPercent
             // 
-            this.ButtonModulo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(19)))), ((int)(((byte)(19)))));
-            this.ButtonModulo.FlatAppearance.BorderSize = 0;
-            this.ButtonModulo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ButtonModulo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ButtonModulo.ForeColor = System.Drawing.Color.White;
-            this.ButtonModulo.Location = new System.Drawing.Point(4, 213);
-            this.ButtonModulo.Name = "ButtonModulo";
-            this.ButtonModulo.Size = new System.Drawing.Size(80, 60);
-            this.ButtonModulo.TabIndex = 62;
-            this.ButtonModulo.Text = "%";
-            this.ButtonModulo.UseVisualStyleBackColor = false;
-            this.ButtonModulo.MouseEnter += new System.EventHandler(this.ButtonModulo_MouseEnter);
-            this.ButtonModulo.MouseLeave += new System.EventHandler(this.ButtonModulo_MouseLeave);
+            this.ButtonPercent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(19)))), ((int)(((byte)(19)))));
+            this.ButtonPercent.FlatAppearance.BorderSize = 0;
+            this.ButtonPercent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonPercent.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ButtonPercent.ForeColor = System.Drawing.Color.White;
+            this.ButtonPercent.Location = new System.Drawing.Point(4, 213);
+            this.ButtonPercent.Name = "ButtonPercent";
+            this.ButtonPercent.Size = new System.Drawing.Size(80, 60);
+            this.ButtonPercent.TabIndex = 62;
+            this.ButtonPercent.Text = "%";
+            this.ButtonPercent.UseVisualStyleBackColor = false;
+            this.ButtonPercent.Click += new System.EventHandler(this.AdvancedOperations_Click);
+            this.ButtonPercent.MouseEnter += new System.EventHandler(this.ButtonPercent_MouseEnter);
+            this.ButtonPercent.MouseLeave += new System.EventHandler(this.ButtonPercent_MouseLeave);
             // 
             // ButtonCE
             // 
@@ -628,7 +629,7 @@
             this.Controls.Add(this.LabelNoHistory);
             this.Controls.Add(this.TextDisplay);
             this.Controls.Add(this.LabelEquation);
-            this.Controls.Add(this.ButtonModulo);
+            this.Controls.Add(this.ButtonPercent);
             this.Controls.Add(this.ButtonCE);
             this.Controls.Add(this.ButtonC);
             this.Controls.Add(this.ButtonBackSpace);
@@ -656,6 +657,7 @@
             this.Controls.Add(this.ButtonDot);
             this.Controls.Add(this.PlusMinusButton);
             this.Controls.Add(this.Button0);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
             this.MaximumSize = new System.Drawing.Size(580, 625);
             this.MinimumSize = new System.Drawing.Size(580, 625);
@@ -687,7 +689,7 @@
         private System.Windows.Forms.Button ButtonDot;
         private System.Windows.Forms.Button PlusMinusButton;
         private System.Windows.Forms.Button ButtonSquareRoot;
-        private System.Windows.Forms.Button ButtonModulo;
+        private System.Windows.Forms.Button ButtonPercent;
         private System.Windows.Forms.Button ButtonCE;
         private System.Windows.Forms.Button ButtonC;
         private System.Windows.Forms.Button ButtonBackSpace;

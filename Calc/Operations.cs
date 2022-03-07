@@ -34,5 +34,10 @@ namespace Calc
         {
             return 1 / n1;
         }
+        // I am not sure how this operation works exactly like in the windows 10 calculator, hence I've made it so that it just divide with 100
+        public static double Percent(double n1)
+        {
+            return n1 / 100;
+        }
     }
 }
