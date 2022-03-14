@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Calc
 {
-    internal class Operations
+    /// <summary>
+    /// Class for all the operations that can be done
+    /// </summary>
+    public class Operations
     {
         public static double Add(double n1, double n2)
         {

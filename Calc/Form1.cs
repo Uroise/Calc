@@ -4,12 +4,18 @@ using System.Windows.Forms;
 
 namespace Calc
 {
+    /// <summary>
+    /// All the code for the actual calculator and all the buttons etc. This class is where every
+    /// event comes. For instance, click, enter, leave etc. This is also where all the code for
+    /// what each element does, for example the text within a textbox changes if some statements
+    /// are met
+    /// </summary>
     public partial class Form1 : Form
     {
-        private double result = 0;
-        private string operation = "";
-        private bool operationPressed = false;
-        private string num1, num2;
+        public double result = 0;
+        public string operation = "";
+        public bool operationPressed = false;
+        public string num1, num2;
 
         public Form1()
         {
@@ -319,7 +325,6 @@ namespace Calc
 
         #endregion Mouse enter/Mouse leave
 
-        
         private void Numbers_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
@@ -346,11 +351,14 @@ namespace Calc
                 TextDisplay.Text = TextDisplay.Text + b.Text;
             }
         }
-        #region operations
+
+        #region operations_Click
+
         private void BasicOperations_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
             // If result is not 0 buttonEqual performs click and operationPressed is true and b.text will become the string operation
+            
             if (result != 0)
             {
                 ButtonEqual.PerformClick();
@@ -359,6 +367,7 @@ namespace Calc
             }
 
             operation = b.Text;
+
 
             result = double.Parse(TextDisplay.Text);
             operationPressed = true;
@@ -368,28 +377,33 @@ namespace Calc
 
             num1 = LabelEquation.Text;
         }
+
         private void AdvancedOperations_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
             // If result is not 0 buttonEqual performs click and operationPressed is true and b.text will become the string operation
-            if (result != 0)
-            {
-                ButtonEqual.PerformClick();
-                operationPressed = true;
+                if (result != 0)
+                {
+                    // performs click because when any of the advanced operator is clicked the display and label equation should change 
+                    // immediatly, however not append any text to the textbox unless the equal button is clicked but I do not know how to 
+                    // do this properly since the calculator will append the wrong answer if the equal button is clicked, hence I let the equal button 
+                    // perform click as soon as one of the advanced operators are clicked
+                    ButtonEqual.PerformClick();
+                    operationPressed = true;
+                    operation = b.Text;
+                }
                 operation = b.Text;
-
-            }
-            operation = b.Text;
-            result = double.Parse(TextDisplay.Text);
-            operationPressed = true;
-            num1 = TextDisplay.Text;
-            if (b.Text != "")
-            {
-                ButtonEqual.PerformClick();
-            }
-
+                result = double.Parse(TextDisplay.Text);
+                operationPressed = true;
+                num1 = TextDisplay.Text;
+                if (b.Text != "")
+                {
+                    ButtonEqual.PerformClick();
+                }
         }
-        #endregion
+
+        #endregion operations_Click
+
         private void ButtonCE_Click(object sender, EventArgs e)
         {
             // Clears entry
@@ -419,20 +433,17 @@ namespace Calc
             HistoryBox.ScrollBars = 0;
         }
 
-
         private void ButtonEqual_Click(object sender, EventArgs e)
         {
-            
             num2 = TextDisplay.Text;
-            operationPressed = false;
-            // What will be showed in the equation label
             LabelEquation.Text = result + " " + operation + " " + TextDisplay.Text + " =";
-            // Switch statement for every operation and the operations is taken from a separate class
+            operationPressed = false;
 
-            // Region
+            // Switch statement for every operation and the operations is taken from a separate class
 
             #region switch statement
 
+            History history = new History();
             switch (operation)
             {
                 case "+":
@@ -450,65 +461,79 @@ namespace Calc
                 case "/":
                     TextDisplay.Text = Operations.Div(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
-
+                    // Since all the advanced operations performs the equal click then they show the equation click
                 case "√":
                     TextDisplay.Text = Operations.Sqrt(double.Parse(TextDisplay.Text)).ToString();
+                    // Shows the label equation
+                    history.LabelSqrt(LabelEquation, result);
+                    // Appends the entered equation to the history windows/textbox
+                    history.TextSqrt(HistoryBox, result);
                     break;
 
                 case "x²":
                     TextDisplay.Text = Operations.Pow(double.Parse(TextDisplay.Text)).ToString();
+                    // Shows the label equation
+                    history.LabelPow(LabelEquation, double.Parse(num2));
+                    // Appends the entered equation to the history windows/textbox
+                    history.TextPow(HistoryBox, double.Parse(num2));
                     break;
 
                 case "1/x":
                     TextDisplay.Text = Operations.OneThroughX(double.Parse(TextDisplay.Text)).ToString();
+                    // Shows the label equation
+                    history.LabelOneThroughX(LabelEquation, result);
+                    // Appends the entered equation to the history windows/textbox
+                    history.TextOneThroughX(HistoryBox, result);
                     break;
+
                 case "%":
                     TextDisplay.Text = Operations.Percent(double.Parse(TextDisplay.Text)).ToString();
+                    // Shows the label equation
+                    history.LabelPercent(LabelEquation, result);
+                    // Appends the entered equation to the history windows/textbox
+                    history.TextPercent(HistoryBox, result);
                     break;
 
                 default:
                     break;
             } // End of switch
-            #endregion operations
 
-            result = double.Parse(TextDisplay.Text);
+            #endregion switch statement
+
+            // If the entered equation is one of the basic operations
+            
+            if (operation == "/")
+            {
+                if (num2 == null || num2 == "0")
+                {
+                    throw new DivideByZeroException();
+                }
+
+            }
+            else if (operation == "+" || operation == "-" || operation == "x" || operation == "/")
+            {
+                HistoryBox.AppendText(LabelEquation.Text + "\n");
+                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
+
+            }
+            try
+            {
+                result = double.Parse(TextDisplay.Text);
+            }
+            catch (FormatException ex)
+            {
+
+                TextDisplay.Text = ex.Message;
+            }
+            
 
             operation = "";
 
-            // Originally what I wanted is that if sqrt is pressed then the label will automatically do the following but I can't figure it out how, can't add it in the operations_click
-            // since we jump to line 423 as soon as sqrt is pressed
-            // if the equation contains sqrt symbol then it will append different text
-            if (LabelEquation.Text.Contains("√"))
-            { 
-                LabelEquation.Text = "√(" + num2 + ") =";
-                HistoryBox.AppendText(LabelEquation.Text + "\n");
-                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-                LabelNoHistory.Text = "";
-            }
-            else if (LabelEquation.Text.Contains("x²"))
-            {
-                LabelEquation.Text = LabelEquation.Text = "sqr(" + num2 + ") =";
-                HistoryBox.AppendText(LabelEquation.Text + "\n");
-                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-            }
-            else if (LabelEquation.Text.Contains("1/x"))
-            {
-                LabelEquation.Text = "1/(" + num2 + ") =";
-                HistoryBox.AppendText(LabelEquation.Text + "\n");
-                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-            }
-            else if (LabelEquation.Text.Contains("%"))
-            {
-                LabelEquation.Text = num2 + "/(100) =";
-                HistoryBox.AppendText(LabelEquation.Text + "\n");
-                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-            }
+
+
+            // if the equation contains any of the advanced operators then it will append different text
+
             // Otherwise appends normal equation
-            else
-            {
-                HistoryBox.AppendText(num1 + " " + num2 + " " + " =" + "\n");
-                HistoryBox.AppendText(TextDisplay.Text + "\n\n");
-            }
             // Resets the result to 0 which leads to that result won't be stored all the time
             result = 0;
             // Since equal button is pressed then the history will append and you should be able to clear the history if you want to
@@ -516,6 +541,7 @@ namespace Calc
 
             LabelNoHistory.Text = "";
         }
+
         private void ButtonBackSpace_Click(object sender, EventArgs e)
         {
             // If the display text is greater than 0
@@ -530,7 +556,6 @@ namespace Calc
                 TextDisplay.Text = "0";
             }
         }
-
 
         #region Keyboard inputs
 
@@ -608,6 +633,5 @@ namespace Calc
         }
 
         #endregion Keyboard inputs
-
     }
 }
