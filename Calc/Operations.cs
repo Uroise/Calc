@@ -42,5 +42,9 @@ namespace Calc
         {
             return n1 / 100;
         }
+        public static double ChangeSign(double n1)
+        {
+            return n1 * -1;
+        }
     }
 }

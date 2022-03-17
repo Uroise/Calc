@@ -50,7 +50,7 @@
             this.ButtonMinus = new System.Windows.Forms.Button();
             this.ButtonEqual = new System.Windows.Forms.Button();
             this.ButtonDot = new System.Windows.Forms.Button();
-            this.PlusMinusButton = new System.Windows.Forms.Button();
+            this.ButtonPlusMinus = new System.Windows.Forms.Button();
             this.ButtonSquareRoot = new System.Windows.Forms.Button();
             this.LabelNoHistory = new System.Windows.Forms.Label();
             this.TextDisplay = new System.Windows.Forms.TextBox();
@@ -61,6 +61,7 @@
             this.LabelNav = new System.Windows.Forms.Label();
             this.HistoryBox = new System.Windows.Forms.RichTextBox();
             this.ButtonBin = new System.Windows.Forms.Button();
+            this.LabelFocus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Button0
@@ -78,7 +79,6 @@
             this.Button0.Text = "0";
             this.Button0.UseVisualStyleBackColor = false;
             this.Button0.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button0.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button0.MouseEnter += new System.EventHandler(this.Button0_MouseEnter);
             this.Button0.MouseLeave += new System.EventHandler(this.Button0_MouseLeave);
             // 
@@ -97,7 +97,6 @@
             this.Button1.Text = "1";
             this.Button1.UseVisualStyleBackColor = false;
             this.Button1.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button1.MouseEnter += new System.EventHandler(this.Button1_MouseEnter);
             this.Button1.MouseLeave += new System.EventHandler(this.Button1_MouseLeave);
             // 
@@ -116,7 +115,6 @@
             this.Button2.Text = "2";
             this.Button2.UseVisualStyleBackColor = false;
             this.Button2.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button2.MouseEnter += new System.EventHandler(this.Button2_MouseEnter);
             this.Button2.MouseLeave += new System.EventHandler(this.Button2_MouseLeave);
             // 
@@ -135,7 +133,6 @@
             this.Button3.Text = "3";
             this.Button3.UseVisualStyleBackColor = false;
             this.Button3.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button3.MouseEnter += new System.EventHandler(this.Button3_MouseEnter);
             this.Button3.MouseLeave += new System.EventHandler(this.Button3_MouseLeave);
             // 
@@ -154,7 +151,6 @@
             this.Button4.Text = "4";
             this.Button4.UseVisualStyleBackColor = false;
             this.Button4.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button4.MouseEnter += new System.EventHandler(this.Button4_MouseEnter);
             this.Button4.MouseLeave += new System.EventHandler(this.Button4_MouseLeave);
             // 
@@ -173,7 +169,6 @@
             this.Button5.Text = "5";
             this.Button5.UseVisualStyleBackColor = false;
             this.Button5.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button5.MouseEnter += new System.EventHandler(this.Button5_MouseEnter);
             this.Button5.MouseLeave += new System.EventHandler(this.Button5_MouseLeave);
             // 
@@ -192,7 +187,6 @@
             this.Button6.Text = "6";
             this.Button6.UseVisualStyleBackColor = false;
             this.Button6.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button6.MouseEnter += new System.EventHandler(this.Button6_MouseEnter);
             this.Button6.MouseLeave += new System.EventHandler(this.Button6_MouseLeave);
             // 
@@ -211,7 +205,6 @@
             this.Button7.Text = "7";
             this.Button7.UseVisualStyleBackColor = false;
             this.Button7.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button7.MouseEnter += new System.EventHandler(this.Button7_MouseEnter);
             this.Button7.MouseLeave += new System.EventHandler(this.Button7_MouseLeave);
             // 
@@ -230,7 +223,6 @@
             this.Button8.Text = "8";
             this.Button8.UseVisualStyleBackColor = false;
             this.Button8.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button8.MouseEnter += new System.EventHandler(this.Button8_MouseEnter);
             this.Button8.MouseLeave += new System.EventHandler(this.Button8_MouseLeave);
             // 
@@ -249,7 +241,6 @@
             this.Button9.Text = "9";
             this.Button9.UseVisualStyleBackColor = false;
             this.Button9.Click += new System.EventHandler(this.Numbers_Click);
-            this.Button9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.Button9.MouseEnter += new System.EventHandler(this.Button9_MouseEnter);
             this.Button9.MouseLeave += new System.EventHandler(this.Button9_MouseLeave);
             // 
@@ -471,26 +462,26 @@
             this.ButtonDot.Text = ".";
             this.ButtonDot.UseVisualStyleBackColor = false;
             this.ButtonDot.Click += new System.EventHandler(this.Numbers_Click);
-            this.ButtonDot.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.ButtonDot.MouseEnter += new System.EventHandler(this.ButtonDot_MouseEnter);
             this.ButtonDot.MouseLeave += new System.EventHandler(this.ButtonDot_MouseLeave);
             // 
-            // PlusMinusButton
+            // ButtonPlusMinus
             // 
-            this.PlusMinusButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(6)))), ((int)(((byte)(6)))));
-            this.PlusMinusButton.FlatAppearance.BorderSize = 0;
-            this.PlusMinusButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PlusMinusButton.Font = new System.Drawing.Font("Segoe UI", 15.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.PlusMinusButton.ForeColor = System.Drawing.Color.White;
-            this.PlusMinusButton.Location = new System.Drawing.Point(6, 872);
-            this.PlusMinusButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.PlusMinusButton.Name = "PlusMinusButton";
-            this.PlusMinusButton.Size = new System.Drawing.Size(114, 100);
-            this.PlusMinusButton.TabIndex = 35;
-            this.PlusMinusButton.Text = "±";
-            this.PlusMinusButton.UseVisualStyleBackColor = false;
-            this.PlusMinusButton.MouseEnter += new System.EventHandler(this.ButtonPlusMinus_MouseEnter);
-            this.PlusMinusButton.MouseLeave += new System.EventHandler(this.ButtonPlusMinus_MouseLeave);
+            this.ButtonPlusMinus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(6)))), ((int)(((byte)(6)))));
+            this.ButtonPlusMinus.FlatAppearance.BorderSize = 0;
+            this.ButtonPlusMinus.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonPlusMinus.Font = new System.Drawing.Font("Segoe UI", 15.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ButtonPlusMinus.ForeColor = System.Drawing.Color.White;
+            this.ButtonPlusMinus.Location = new System.Drawing.Point(6, 872);
+            this.ButtonPlusMinus.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ButtonPlusMinus.Name = "ButtonPlusMinus";
+            this.ButtonPlusMinus.Size = new System.Drawing.Size(114, 100);
+            this.ButtonPlusMinus.TabIndex = 35;
+            this.ButtonPlusMinus.Text = "±";
+            this.ButtonPlusMinus.UseVisualStyleBackColor = false;
+            this.ButtonPlusMinus.Click += new System.EventHandler(this.ChangeSign_Click);
+            this.ButtonPlusMinus.MouseEnter += new System.EventHandler(this.ButtonPlusMinus_MouseEnter);
+            this.ButtonPlusMinus.MouseLeave += new System.EventHandler(this.ButtonPlusMinus_MouseLeave);
             // 
             // ButtonSquareRoot
             // 
@@ -534,6 +525,7 @@
             this.TextDisplay.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.TextDisplay.Multiline = true;
             this.TextDisplay.Name = "TextDisplay";
+            this.TextDisplay.ReadOnly = true;
             this.TextDisplay.Size = new System.Drawing.Size(481, 112);
             this.TextDisplay.TabIndex = 65;
             this.TextDisplay.Text = "0";
@@ -621,6 +613,7 @@
             this.HistoryBox.Location = new System.Drawing.Point(491, 132);
             this.HistoryBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.HistoryBox.Name = "HistoryBox";
+            this.HistoryBox.ReadOnly = true;
             this.HistoryBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.HistoryBox.Size = new System.Drawing.Size(315, 773);
             this.HistoryBox.TabIndex = 54;
@@ -645,12 +638,21 @@
             this.ButtonBin.MouseEnter += new System.EventHandler(this.ButtonBin_MouseEnter);
             this.ButtonBin.MouseLeave += new System.EventHandler(this.ButtonBin_MouseLeave);
             // 
+            // LabelFocus
+            // 
+            this.LabelFocus.AutoSize = true;
+            this.LabelFocus.Location = new System.Drawing.Point(20, 311);
+            this.LabelFocus.Name = "LabelFocus";
+            this.LabelFocus.Size = new System.Drawing.Size(0, 25);
+            this.LabelFocus.TabIndex = 69;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
             this.ClientSize = new System.Drawing.Size(820, 986);
+            this.Controls.Add(this.LabelFocus);
             this.Controls.Add(this.ButtonBin);
             this.Controls.Add(this.ButtonSquareRoot);
             this.Controls.Add(this.LabelNoHistory);
@@ -682,7 +684,7 @@
             this.Controls.Add(this.Button1);
             this.Controls.Add(this.Button2);
             this.Controls.Add(this.ButtonDot);
-            this.Controls.Add(this.PlusMinusButton);
+            this.Controls.Add(this.ButtonPlusMinus);
             this.Controls.Add(this.Button0);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.KeyPreview = true;
@@ -690,6 +692,7 @@
             this.MinimumSize = new System.Drawing.Size(819, 1004);
             this.Name = "Form1";
             this.Text = "Calculator";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Buttons_KeyPress);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -714,7 +717,7 @@
         private System.Windows.Forms.Button ButtonMinus;
         private System.Windows.Forms.Button ButtonEqual;
         private System.Windows.Forms.Button ButtonDot;
-        private System.Windows.Forms.Button PlusMinusButton;
+        private System.Windows.Forms.Button ButtonPlusMinus;
         private System.Windows.Forms.Button ButtonSquareRoot;
         private System.Windows.Forms.Button ButtonPercent;
         private System.Windows.Forms.Button ButtonCE;
@@ -729,5 +732,6 @@
         private System.Windows.Forms.Label LabelNav;
         private System.Windows.Forms.RichTextBox HistoryBox;
         private System.Windows.Forms.Button ButtonBin;
+        private System.Windows.Forms.Label LabelFocus;
     }
 }

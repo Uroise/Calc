@@ -11,12 +11,12 @@ namespace Calc
     /// Adhere, this class is saved as a form/new solution because I've created new labels 
     /// and new RichTextBoxes
     /// </summary>
-    public class History : Form1
+    public class History 
     {
         public double historyResult;
-        public void LabelSqrt(Label s, double n1)
+        public void LabelSqrt(Label l, double n1)
         {
-            s.Text = "√(" + n1 + ") = ";
+            l.Text = "√(" + n1 + ") = ";
         }
         public void TextSqrt(RichTextBox t, double n2)
         {
@@ -25,9 +25,9 @@ namespace Calc
             t.AppendText("\t" + historyResult + "\n\n");
 
         }
-        public void LabelPow(Label s, double n1)
+        public void LabelPow(Label l, double n1)
         {
-            s.Text = "sqr(" + n1 + ") = ";
+            l.Text = "sqr(" + n1 + ") = ";
         }
         public void TextPow(RichTextBox t, double n2)
         {
@@ -35,9 +35,9 @@ namespace Calc
             t.AppendText("sqr(" + n2 + ") = \n");
             t.AppendText("\t" + historyResult + "\n\n");
         }
-        public void LabelOneThroughX(Label s, double n1)
+        public void LabelOneThroughX(Label l, double n1)
         {
-            s.Text = "1/(" + n1 + ") = ";
+            l.Text = "1/(" + n1 + ") = ";
         }
         public void TextOneThroughX(RichTextBox t, double n2)
         {
@@ -45,9 +45,9 @@ namespace Calc
             t.AppendText("1/(" + n2 + ") = \n");
             t.AppendText("\t" + historyResult + "\n\n");
         }
-        public void LabelPercent(Label s, double n1)
+        public void LabelPercent(Label l, double n1)
         {
-            s.Text = n1 + "/(100) =";
+            l.Text = n1 + "/(100) =";
         }
         public void TextPercent(RichTextBox t, double n2)
         {
