@@ -44,6 +44,8 @@ namespace Calc
         }
         public static double ChangeSign(double n1)
         {
+            // Easiest way to change the number to negative number, since negative multiplied by negativ will be positive
+            // this will alway work as it should
             return n1 * -1;
         }
     }
