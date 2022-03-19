@@ -13,13 +13,16 @@ namespace Calc
     public partial class Form1 : Form
     {
         public double result = 0;
+
         // Captures the operation that was pressed
         public string operation = "";
+
         // Used so that the numbers that are pressed, after an operation is pressed,
         // won't append to the same number. Basically if we would enter 2 and then + the text
         // would continue to append to the textbox (the 2) before the + instead of resetting the
         // texbox after and appending new numbers to the textbox
         public bool operationPressed = false;
+
         public string num1, num2;
 
         public Form1()
@@ -329,6 +332,7 @@ namespace Calc
         }
 
         #endregion Mouse enter/Mouse leave
+
         // Own click event because I don't know how to apply this in Numbers_Click
         private void ChangeSign_Click(object sender, EventArgs e)
         {
@@ -337,6 +341,7 @@ namespace Calc
                 TextDisplay.Text = Operations.ChangeSign(double.Parse(TextDisplay.Text)).ToString();
             }
         }
+
         private void Numbers_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
@@ -365,15 +370,11 @@ namespace Calc
                 TextDisplay.Text += b.Text;
             }
 
-            
-
             // Takes focus so that the enter button on the keyboard is not focused by any other button
             LabelFocus.Focus();
         }
 
         #region operations_Click
-
-
 
         private void BasicOperations_Click(object sender, EventArgs e)
         {
@@ -488,6 +489,7 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextSqrt(HistoryBox, result);
                     break;
+
                 case "x²":
                     TextDisplay.Text = Operations.Pow(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -503,6 +505,7 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextOneThroughX(HistoryBox, result);
                     break;
+
                 case "%":
                     TextDisplay.Text = Operations.Percent(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -510,26 +513,24 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextPercent(HistoryBox, result);
                     break;
+
                 default:
                     break;
             } // End of switch
 
             #endregion switch statement
 
-            // If the entered equation is one of the basic operations
-
-            //DivideByZeroException ex = new DivideByZeroException("Cannot divide by zero");
-            DivideByZeroException DivZero = new DivideByZeroException("Cannot divide by zero");
-
-            if (operation == "/")
+            // new divide exception declared
+            DivideByZeroException ex = new DivideByZeroException("Cannot divide by zero");            
+            // Needs to be here so the if statement within the try catch works
+            if (operation == "/" && num2 == null || num2 == "0")
             {
                 // This needs to be here otherwise it will append the error message
                 // to the richtextbox/HistoryBox
-                if (num2 == null || num2 == "0")
-                {
-                    TextDisplay.Text = "";
-                    LabelEquation.Text = num1;
-                }
+                LabelEquation.Text = num1;
+                // Without this line below the Display won't show the message in display
+                // when the exception is caught
+                TextDisplay.Text = ex.Message;
             }
             // This if statement is here since all of these "basic operations" should
             // append the same text and I did not want to write this in the class and
@@ -539,25 +540,30 @@ namespace Calc
                 HistoryBox.AppendText(LabelEquation.Text + "\n");
                 HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
             }
-            // Tries the result
 
+            // Tries the result
             try
             {
                 result = double.Parse(TextDisplay.Text);
             }
             // Catch expection if result was wrong input
-            catch (Exception ex)
+            catch (Exception errorMessage)
             {
-                // If the input was wrong and contains division then the texbox will
-                // show Divide by zero expection
+                /// <summary>
+                /// If the input was wrong and contains division then the texbox will
+                /// show Divide by zero expection.If division was tried then the exception
+                /// should be division exception and not the input string however the problem
+                /// is that I want to throw this in the if-statement above, if (operation == "/")
+                /// however if I throw an exception, the program will stop/break instead which is not what I want to achieve
+                /// I want the calculator to just display the divide exception message and not break, but I do not know how to do this so this is the work arund
+                /// </summary>
                 if (LabelEquation.Text.Contains("/"))
                 {
-                    TextDisplay.Text = DivZero.Message;
+                    TextDisplay.Text = ex.Message;
                 }
-                // Otherwise it will just show the normal exception error
                 else
                 {
-                    TextDisplay.Text = ex.Message;
+                    TextDisplay.Text = errorMessage.Message;
                 }
             }
 
@@ -586,14 +592,11 @@ namespace Calc
             }
         }
 
-
-
-
         #region Keyboard inputs
 
         private void Buttons_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Did if statement since keychar cannot be converted to string. Explicit casting 
+            // Did if statement since keychar cannot be converted to string. Explicit casting
             // the Keys.Enter
             if (e.KeyChar == (char)Keys.Enter)
             {
