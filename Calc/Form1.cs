@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -8,9 +8,10 @@ namespace Calc
     /// <summary>
     /// All the code for the actual calculator and all the buttons etc. This class is where every
     /// event comes. For instance, click, enter, leave etc. This is also where all the code for
-    /// what each element does, for example the text within a textbox changes if some statements
-    /// are met
+    /// what each element does, for example the text within a textbox changes if some conditions are met.
+    /// Many exceptions are handeled without needing to use try catch or similar exception handelers
     /// </summary>
+
     public partial class Form1 : Form
     {
         public double result = 0;
@@ -25,12 +26,10 @@ namespace Calc
 
         public string num1, num2;
 
-        
-
         public Form1()
         {
             InitializeComponent();
-            // Have the visibility false in the form otherwise the recycle bin button will always be visible untill clicked, which makes it look like the button is inconsistent
+            // Have the visibility false in the form otherwise the recycle bin button will always be visible untill clicked
             ButtonBin.Visible = false;
         }
 
@@ -343,6 +342,7 @@ namespace Calc
                 TextDisplay.Text = Operations.ChangeSign(double.Parse(TextDisplay.Text)).ToString();
             }
         }
+        // Event for all numbers including dot
         private void Numbers_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
@@ -362,7 +362,7 @@ namespace Calc
                 // Want to make sure that the 0 still stays if the decimal is pressed, however, I do not know how to do this
                 if (!TextDisplay.Text.Contains("."))
                 {
-                    TextDisplay.Text += TextDisplay.Text + b.Text;
+                    TextDisplay.Text += b.Text;
                 }
             }
             // Otherwise it will just add the numbers that are clicked
@@ -370,8 +370,18 @@ namespace Calc
             {
                 TextDisplay.Text += b.Text;
             }
-
-            // Takes focus so that the enter button on the keyboard is not focused by any other button
+            if (TextDisplay.Text.Contains("Cannot divide"))
+            {
+                TextDisplay.Clear();
+                // Enables all the button again
+                foreach (Button button in DisableEnable)
+                {
+                    button.Enabled = true;
+                }
+                LabelEquation.Text = "";
+                TextDisplay.Text += b.Text;
+            }
+            // Takes focus none of the buttons will be focosed keyboard has been used
             LabelFocus.Focus();
         }
 
@@ -390,27 +400,39 @@ namespace Calc
             }
 
             operation = b.Text;
-            // this try statement
-            try
-            {
-                result = double.Parse(TextDisplay.Text);
-            }
-            catch (Exception)
-            {
-                
-            }
-            
+
+            result = double.Parse(TextDisplay.Text);
+
             operationPressed = true;
             // The label will show the result and the operation
 
             LabelEquation.Text = result + " " + operation;
 
             num1 = LabelEquation.Text;
+            // Adds all the buttons that should be disabled if division with 0 is tried
+            // Want to do this in a class but don't know how to get elements from Form1.cs add
+            // those elements to that class
+
+            DisableEnable.Add(ButtonPlusMinus);
+            DisableEnable.Add(ButtonPlus);
+            DisableEnable.Add(ButtonMinus);
+            DisableEnable.Add(ButtonMultiply);
+            DisableEnable.Add(ButtonDivide);
+            DisableEnable.Add(ButtonOneDevidedX);
+            DisableEnable.Add(ButtonPercent);
+            DisableEnable.Add(ButtonPower);
+            DisableEnable.Add(ButtonSquareRoot);
+            DisableEnable.Add(ButtonDot);
         }
-        
+
+        // Generated outside of a method which gives us access to the list inside of the foreach loops the button
+        // needs to be added before the line of code where the list is generated, I'm unsure why but
+        // I think it's because division is in the Basic operation method hence why all buttons will be
+        // added there since the buttons should only be disabled if division with 0 was tried
+        private readonly List<Button> DisableEnable = new List<Button>();
+
         private void AdvancedOperations_Click(object sender, EventArgs e)
         {
-            
             Button b = (Button)sender;
             // If result is not 0 buttonEqual performs click and operationPressed is true and b.text will become the string operation
             if (result != 0)
@@ -424,14 +446,7 @@ namespace Calc
                 operation = b.Text;
             }
             operation = b.Text;
-            try
-            {
-                result = double.Parse(TextDisplay.Text);
-            }
-            catch (Exception)
-            {
-
-            }
+            result = double.Parse(TextDisplay.Text);
 
             operationPressed = true;
             num1 = TextDisplay.Text;
@@ -440,15 +455,43 @@ namespace Calc
                 ButtonEqual.PerformClick();
             }
         }
-        
+
         #endregion operations_Click
 
-        
+        private void ButtonBackSpace_Click(object sender, EventArgs e)
+        {
+            // If the display text is greater than 0
+            if (TextDisplay.Text.Length > 0)
+            {
+                // Then remove the last button
+                TextDisplay.Text = TextDisplay.Text.Remove(TextDisplay.Text.Length - 1, 1);
+            }
+            // If all the numbers are removed with backspace then there should be a 0 shown
+            if (TextDisplay.Text == "")
+            {
+                TextDisplay.Text = "0";
+            }
+            // Enables all the button again
+            foreach (Button button in DisableEnable)
+            {
+                button.Enabled = true;
+            }
+            if (TextDisplay.Text.Contains("Cannot divide"))
+            {
+                ButtonC.PerformClick();
+            }
+        }
+
         private void ButtonCE_Click(object sender, EventArgs e)
         {
             // Clears entry
             TextDisplay.Text = "0";
             LabelEquation.Text = "";
+            // Enables all the button again
+            foreach (Button button in DisableEnable)
+            {
+                button.Enabled = true;
+            }
         }
 
         private void ButtonC_Click(object sender, EventArgs e)
@@ -457,7 +500,11 @@ namespace Calc
             TextDisplay.Text = "0";
             result = 0;
             LabelEquation.Text = "";
-            
+            // Enables all the button again
+            foreach (Button button in DisableEnable)
+            {
+                button.Enabled = true;
+            }
         }
 
         private void ButtonBin_Click(object sender, EventArgs e)
@@ -481,25 +528,28 @@ namespace Calc
 
             // Switch statement for every operation and the operations is taken from a separate class
 
-            #region switch statement
+            #region switch operations
 
             History history = new History();
- 
+
             switch (operation)
             {
                 case "+":
                     TextDisplay.Text = Operations.Add(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
+
                 case "-":
                     TextDisplay.Text = Operations.Sub(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
+
                 case "x":
                     TextDisplay.Text = Operations.Mult(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
+
                 case "/":
                     TextDisplay.Text = Operations.Div(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
-                    // Since all the advanced operations performs the equal click then they show the equation click
+                // Since all the advanced operations performs the equal click then they show the equation click
                 case "√":
                     TextDisplay.Text = Operations.Sqrt(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -507,6 +557,7 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextSqrt(HistoryBox, result);
                     break;
+
                 case "x²":
                     TextDisplay.Text = Operations.Pow(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -514,6 +565,7 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextPow(HistoryBox, double.Parse(num2));
                     break;
+
                 case "1/x":
                     TextDisplay.Text = Operations.OneThroughX(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -521,6 +573,7 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextOneThroughX(HistoryBox, result);
                     break;
+
                 case "%":
                     TextDisplay.Text = Operations.Percent(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -528,11 +581,12 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextPercent(HistoryBox, result);
                     break;
+
                 default:
                     break;
             } // End of switch
 
-            #endregion switch statement
+            #endregion switch operations
 
             // new divide exception declared
             DivideByZeroException ex = new DivideByZeroException("Cannot divide by zero");
@@ -545,11 +599,15 @@ namespace Calc
                 // Without this line below the Display won't show the message in display
                 // when the exception is caught
                 TextDisplay.Text = ex.Message;
-                ButtonPlus.Enabled = false;
-                
+                // Disables all buttons in the list if division with 0 was tried
+                // so those disabled buttons cannot be pressed which would lead to exception if an
+                // operation would be pressed
+                foreach (Button button in DisableEnable)
+                {
+                    button.Enabled = false;
+                }
             }
 
-                
             // This if statement is here since all of these "basic operations" should
             // append the same text and I did not want to write this in the class and
             // in the switch statement, hence I created a else if statement
@@ -557,7 +615,6 @@ namespace Calc
             {
                 HistoryBox.AppendText(LabelEquation.Text + "\n");
                 HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-                
             }
 
             // Tries the result
@@ -594,21 +651,6 @@ namespace Calc
             ButtonBin.Visible = true;
 
             LabelNoHistory.Text = "";
-        }
-
-        private void ButtonBackSpace_Click(object sender, EventArgs e)
-        {
-            // If the display text is greater than 0
-            if (TextDisplay.Text.Length > 0)
-            {
-                // Then remove the last button
-                TextDisplay.Text = TextDisplay.Text.Remove(TextDisplay.Text.Length - 1, 1);
-            }
-            // If all the numbers are removed with backspace then there should be a 0 shown
-            if (TextDisplay.Text == "")
-            {
-                TextDisplay.Text = "0";
-            }
         }
 
         #region Keyboard inputs

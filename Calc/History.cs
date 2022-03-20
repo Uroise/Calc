@@ -8,11 +8,11 @@ namespace Calc
 {
     /// <summary>
     /// Class for the history and the label
-    /// Adhere, this class is saved as a form/new solution because I've created new labels 
-    /// and new RichTextBoxes
     /// </summary>
     public class History 
     {
+        // Variable for history when something needs to be appended. 
+        // Set historyResult equals to operation, thereafter appends historyResult
         public double historyResult;
         public void LabelSqrt(Label l, double n1)
         {
