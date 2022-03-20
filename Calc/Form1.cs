@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -17,13 +18,14 @@ namespace Calc
         // Captures the operation that was pressed
         public string operation = "";
 
-        // Used so that the numbers that are pressed, after an operation is pressed,
-        // won't append to the same number. Basically if we would enter 2 and then + the text
-        // would continue to append to the textbox (the 2) before the + instead of resetting the
+        // Ff we would enter 2 and then + the text would continue to append to the 2
+        // that was entered before the operation instead of resetting the
         // texbox after and appending new numbers to the textbox
         public bool operationPressed = false;
 
         public string num1, num2;
+
+        
 
         public Form1()
         {
@@ -341,7 +343,6 @@ namespace Calc
                 TextDisplay.Text = Operations.ChangeSign(double.Parse(TextDisplay.Text)).ToString();
             }
         }
-
         private void Numbers_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
@@ -389,8 +390,16 @@ namespace Calc
             }
 
             operation = b.Text;
-
-            result = double.Parse(TextDisplay.Text);
+            // this try statement
+            try
+            {
+                result = double.Parse(TextDisplay.Text);
+            }
+            catch (Exception)
+            {
+                
+            }
+            
             operationPressed = true;
             // The label will show the result and the operation
 
@@ -398,9 +407,10 @@ namespace Calc
 
             num1 = LabelEquation.Text;
         }
-
+        
         private void AdvancedOperations_Click(object sender, EventArgs e)
         {
+            
             Button b = (Button)sender;
             // If result is not 0 buttonEqual performs click and operationPressed is true and b.text will become the string operation
             if (result != 0)
@@ -414,7 +424,15 @@ namespace Calc
                 operation = b.Text;
             }
             operation = b.Text;
-            result = double.Parse(TextDisplay.Text);
+            try
+            {
+                result = double.Parse(TextDisplay.Text);
+            }
+            catch (Exception)
+            {
+
+            }
+
             operationPressed = true;
             num1 = TextDisplay.Text;
             if (b.Text != "")
@@ -422,9 +440,10 @@ namespace Calc
                 ButtonEqual.PerformClick();
             }
         }
-
+        
         #endregion operations_Click
 
+        
         private void ButtonCE_Click(object sender, EventArgs e)
         {
             // Clears entry
@@ -438,6 +457,7 @@ namespace Calc
             TextDisplay.Text = "0";
             result = 0;
             LabelEquation.Text = "";
+            
         }
 
         private void ButtonBin_Click(object sender, EventArgs e)
@@ -464,24 +484,22 @@ namespace Calc
             #region switch statement
 
             History history = new History();
+ 
             switch (operation)
             {
                 case "+":
                     TextDisplay.Text = Operations.Add(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
-
                 case "-":
                     TextDisplay.Text = Operations.Sub(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
-
                 case "x":
                     TextDisplay.Text = Operations.Mult(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
-
                 case "/":
                     TextDisplay.Text = Operations.Div(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
-                // Since all the advanced operations performs the equal click then they show the equation click
+                    // Since all the advanced operations performs the equal click then they show the equation click
                 case "√":
                     TextDisplay.Text = Operations.Sqrt(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -489,7 +507,6 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextSqrt(HistoryBox, result);
                     break;
-
                 case "x²":
                     TextDisplay.Text = Operations.Pow(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -497,7 +514,6 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextPow(HistoryBox, double.Parse(num2));
                     break;
-
                 case "1/x":
                     TextDisplay.Text = Operations.OneThroughX(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -505,7 +521,6 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextOneThroughX(HistoryBox, result);
                     break;
-
                 case "%":
                     TextDisplay.Text = Operations.Percent(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -513,7 +528,6 @@ namespace Calc
                     // Appends the entered equation to the history windows/textbox
                     history.TextPercent(HistoryBox, result);
                     break;
-
                 default:
                     break;
             } // End of switch
@@ -521,7 +535,7 @@ namespace Calc
             #endregion switch statement
 
             // new divide exception declared
-            DivideByZeroException ex = new DivideByZeroException("Cannot divide by zero");            
+            DivideByZeroException ex = new DivideByZeroException("Cannot divide by zero");
             // Needs to be here so the if statement within the try catch works
             if (operation == "/" && num2 == null || num2 == "0")
             {
@@ -531,7 +545,11 @@ namespace Calc
                 // Without this line below the Display won't show the message in display
                 // when the exception is caught
                 TextDisplay.Text = ex.Message;
+                ButtonPlus.Enabled = false;
+                
             }
+
+                
             // This if statement is here since all of these "basic operations" should
             // append the same text and I did not want to write this in the class and
             // in the switch statement, hence I created a else if statement
@@ -539,6 +557,7 @@ namespace Calc
             {
                 HistoryBox.AppendText(LabelEquation.Text + "\n");
                 HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
+                
             }
 
             // Tries the result
