@@ -10,20 +10,18 @@ namespace Calc
     /// event comes. For instance, click, enter, leave etc. This is also where all the code for
     /// what each element does, for example the text within a textbox changes if some conditions are met.
     /// Many exceptions are handeled without needing to use try catch or similar exception handelers
+    /// Most of the code is in the class Form1 because all the event handelers is linked to Form1 by default
     /// </summary>
 
     public partial class Form1 : Form
     {
         public double result = 0;
-
         // Captures the operation that was pressed
         public string operation = "";
-
-        // Ff we would enter 2 and then + the text would continue to append to the 2
+        // If we would enter 2 and then + the text would continue to append to the 2
         // that was entered before the operation instead of resetting the
         // texbox after and appending new numbers to the textbox
         public bool operationPressed = false;
-
         public string num1, num2;
 
         public Form1()
@@ -334,7 +332,7 @@ namespace Calc
 
         #endregion Mouse enter/Mouse leave
 
-        // Own click event because I don't know how to apply this in Numbers_Click
+        // Changes the current number to positive/negative number
         private void ChangeSign_Click(object sender, EventArgs e)
         {
             if (TextDisplay.Text != "0" || operationPressed)
@@ -370,6 +368,7 @@ namespace Calc
             {
                 TextDisplay.Text += b.Text;
             }
+            // Takes care of that the numbers still work after the divide by zero exception
             if (TextDisplay.Text.Contains("Cannot divide"))
             {
                 TextDisplay.Clear();
@@ -390,8 +389,8 @@ namespace Calc
         private void BasicOperations_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            // If result is not 0 buttonEqual performs click and operationPressed is true and b.text will become the string operation
-
+            // If result is not 0 buttonEqual performs click, this means that if a number was pressed, and then an operator but not a second number
+            // then it will just do the operation of the only number that was clicked
             if (result != 0)
             {
                 ButtonEqual.PerformClick();
@@ -400,12 +399,9 @@ namespace Calc
             }
 
             operation = b.Text;
-
             result = double.Parse(TextDisplay.Text);
-
             operationPressed = true;
             // The label will show the result and the operation
-
             LabelEquation.Text = result + " " + operation;
 
             num1 = LabelEquation.Text;
@@ -434,7 +430,8 @@ namespace Calc
         private void AdvancedOperations_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            // If result is not 0 buttonEqual performs click and operationPressed is true and b.text will become the string operation
+            // If result is not 0 buttonEqual performs click, this means that if a number was pressed, and then an operator but not a second number
+            // then it will just do the operation of the only number that was clicked
             if (result != 0)
             {
                 // performs click because when any of the advanced operator is clicked the display and label equation should change
@@ -476,6 +473,7 @@ namespace Calc
             {
                 button.Enabled = true;
             }
+            // If divide by zero exception but backspace is clicked then it will do the same as the clear button does
             if (TextDisplay.Text.Contains("Cannot divide"))
             {
                 ButtonC.PerformClick();
@@ -511,7 +509,8 @@ namespace Calc
         {
             // Clears the history if the recycle bin is pressed
             HistoryBox.Clear();
-            // Since the recycle bin is cleared the label should show that there is no history             if (LabelNoHistory.Text == "")
+            // Since the recycle bin is cleared the label should show that there is no history
+            if (LabelNoHistory.Text == "")
             {
                 LabelNoHistory.Text = "There's no history yet";
             }
@@ -527,11 +526,9 @@ namespace Calc
             operationPressed = false;
 
             // Switch statement for every operation and the operations is taken from a separate class
-
             #region switch operations
-
+            // Creates local variable which gives access to the methods in the History class
             History history = new History();
-
             switch (operation)
             {
                 case "+":
@@ -549,7 +546,13 @@ namespace Calc
                 case "/":
                     TextDisplay.Text = Operations.Div(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
-                // Since all the advanced operations performs the equal click then they show the equation click
+                // Since all the advanced operations performs equal click then they show the operation performed
+                // All history.label... takes a label as an argument and this label should be the LabelEquation since in the histoy class
+                // we are basically asking "Which label should get this text appended" and we want the text appended to LabelEquation
+                // In the History class we have a double n1 which is the number that should be appended. For example if we want to calculate the sqrt(81)
+                // we want the labelequation to show that we calculated sqrt(81) and the the result display should show the 9.
+                // We also have double n2 which is equivalent of the operation. This mean that n2 is the result of an operation and should immedeatly show the answer of the operation
+                // histoy.text... is basically asking "where should we append text" and we want the text to append to the HistoryBox
                 case "√":
                     TextDisplay.Text = Operations.Sqrt(double.Parse(TextDisplay.Text)).ToString();
                     // Shows the label equation
@@ -560,7 +563,7 @@ namespace Calc
 
                 case "x²":
                     TextDisplay.Text = Operations.Pow(double.Parse(TextDisplay.Text)).ToString();
-                    // Shows the label equation
+                    // Shows the label equation, 
                     history.LabelPow(LabelEquation, double.Parse(num2));
                     // Appends the entered equation to the history windows/textbox
                     history.TextPow(HistoryBox, double.Parse(num2));
@@ -649,7 +652,7 @@ namespace Calc
             result = 0;
             // Since equal button is pressed then the history will append and you should be able to clear the history if you want to
             ButtonBin.Visible = true;
-
+            // Hides the text "There is no history yet"
             LabelNoHistory.Text = "";
         }
 
