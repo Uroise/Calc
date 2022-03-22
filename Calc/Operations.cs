@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Calc
 {
-    internal class Operations
+    /// <summary>
+    /// Class for all the operations that can be done
+    /// </summary>
+    public class Operations
     {
         public static double Add(double n1, double n2)
         {
@@ -38,6 +41,12 @@ namespace Calc
         public static double Percent(double n1)
         {
             return n1 / 100;
+        }
+        public static double ChangeSign(double n1)
+        {
+            // Easiest way to change the number to negative number, since negative multiplied by negativ will be positive
+            // this will alway work as it should
+            return n1 * -1;
         }
     }
 }

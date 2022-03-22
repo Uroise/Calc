@@ -1,20 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace Calc
 {
+    /// <summary>
+    /// All the code for the actual calculator and all the buttons etc. This class is where every
+    /// event comes. For instance, click, enter, leave etc. This is also where all the code for
+    /// what each element does, for example the text within a textbox changes if some conditions are met.
+    /// Many exceptions are handeled without needing to use try catch or similar exception handelers
+    /// Most of the code is in the class Form1 because all the event handelers is linked to Form1 by default
+    /// </summary>
+
     public partial class Form1 : Form
     {
-        private double result = 0;
-        private string operation = "";
-        private bool operationPressed = false;
-        private string num1, num2;
+        public double result = 0;
+        // Captures the operation that was pressed
+        public string operation = "";
+        // If we would enter 2 and then + the text would continue to append to the 2
+        // that was entered before the operation instead of resetting the
+        // texbox after and appending new numbers to the textbox
+        public bool operationPressed = false;
+        public string num1, num2;
 
         public Form1()
         {
             InitializeComponent();
-            // Have the visibility false in the form otherwise the button will always be visible untill it was clicked, which makes it look like the button is inconsistent
+            // Have the visibility false in the form otherwise the recycle bin button will always be visible untill clicked
             ButtonBin.Visible = false;
         }
 
@@ -127,12 +140,12 @@ namespace Calc
         // Operator buttons
         private void ButtonPlusMinus_MouseEnter(object sender, EventArgs e)
         {
-            PlusMinusButton.BackColor = Color.FromArgb(52, 52, 52);
+            ButtonPlusMinus.BackColor = Color.FromArgb(52, 52, 52);
         }
 
         private void ButtonPlusMinus_MouseLeave(object sender, EventArgs e)
         {
-            PlusMinusButton.BackColor = Color.FromArgb(6, 6, 6);
+            ButtonPlusMinus.BackColor = Color.FromArgb(6, 6, 6);
         }
 
         private void ButtonDot_MouseEnter(object sender, EventArgs e)
@@ -319,38 +332,65 @@ namespace Calc
 
         #endregion Mouse enter/Mouse leave
 
-        
+        // Changes the current number to positive/negative number
+        private void ChangeSign_Click(object sender, EventArgs e)
+        {
+            if (TextDisplay.Text != "0" || operationPressed)
+            {
+                TextDisplay.Text = Operations.ChangeSign(double.Parse(TextDisplay.Text)).ToString();
+            }
+        }
+        // Event for all numbers including dot
         private void Numbers_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            // If the display shows zero then the display will be cleared and if the operation is pressed text should be added instead of appended
+            // If the display shows zero then the display will be cleared and if
+            // an operation has been pressed then it determinates whether the textbox should be cleared
             if ((TextDisplay.Text == "0") || (operationPressed))
             {
                 TextDisplay.Clear();
-                TextDisplay.Text = TextDisplay.Text + b.Text;
+                TextDisplay.Text += TextDisplay.Text + b.Text;
                 operationPressed = false;
             }
             // Want to check if the text of the button is a decimal
             else if (b.Text == "." && TextDisplay.Text == "0")
             {
                 // if the text of the button is a decimal then this if-statement checks whether the display already contains a decimal or not
-                // if the dispaly does not contain a decimal then a decimal can be added
+                // and if the dispaly does not contain a decimal, then a decimal can be added
+                // Want to make sure that the 0 still stays if the decimal is pressed, however, I do not know how to do this
                 if (!TextDisplay.Text.Contains("."))
                 {
-                    TextDisplay.Text = TextDisplay.Text + b.Text;
+                    TextDisplay.Text += b.Text;
                 }
             }
             // Otherwise it will just add the numbers that are clicked
             else
             {
-                TextDisplay.Text = TextDisplay.Text + b.Text;
+                TextDisplay.Text += b.Text;
             }
+            // Takes care of that the numbers still work after the divide by zero exception
+            if (TextDisplay.Text.Contains("Cannot divide"))
+            {
+                TextDisplay.Clear();
+                // Enables all the button again
+                foreach (Button button in DisableEnable)
+                {
+                    button.Enabled = true;
+                }
+                LabelEquation.Text = "";
+                TextDisplay.Text += b.Text;
+            }
+            // Takes focus none of the buttons will be focosed keyboard has been used
+            LabelFocus.Focus();
         }
-        #region operations
+
+        #region operations_Click
+
         private void BasicOperations_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            // If result is not 0 buttonEqual performs click and operationPressed is true and b.text will become the string operation
+            // If result is not 0 buttonEqual performs click, this means that if a number was pressed, and then an operator but not a second number
+            // then it will just do the operation of the only number that was clicked
             if (result != 0)
             {
                 ButtonEqual.PerformClick();
@@ -359,57 +399,117 @@ namespace Calc
             }
 
             operation = b.Text;
-
             result = double.Parse(TextDisplay.Text);
             operationPressed = true;
             // The label will show the result and the operation
-
             LabelEquation.Text = result + " " + operation;
 
             num1 = LabelEquation.Text;
+            // Adds all the buttons that should be disabled if division with 0 is tried
+            // Want to do this in a class but don't know how to get elements from Form1.cs add
+            // those elements to that class
+
+            DisableEnable.Add(ButtonPlusMinus);
+            DisableEnable.Add(ButtonPlus);
+            DisableEnable.Add(ButtonMinus);
+            DisableEnable.Add(ButtonMultiply);
+            DisableEnable.Add(ButtonDivide);
+            DisableEnable.Add(ButtonOneDevidedX);
+            DisableEnable.Add(ButtonPercent);
+            DisableEnable.Add(ButtonPower);
+            DisableEnable.Add(ButtonSquareRoot);
+            DisableEnable.Add(ButtonDot);
         }
+
+        // Generated outside of a method which gives us access to the list inside of the foreach loops the button
+        // needs to be added before the line of code where the list is generated, I'm unsure why but
+        // I think it's because division is in the Basic operation method hence why all buttons will be
+        // added there since the buttons should only be disabled if division with 0 was tried
+        private readonly List<Button> DisableEnable = new List<Button>();
+
         private void AdvancedOperations_Click(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            // If result is not 0 buttonEqual performs click and operationPressed is true and b.text will become the string operation
+            // If result is not 0 buttonEqual performs click, this means that if a number was pressed, and then an operator but not a second number
+            // then it will just do the operation of the only number that was clicked
             if (result != 0)
             {
+                // performs click because when any of the advanced operator is clicked the display and label equation should change
+                // immediatly, however not append any text to the textbox unless the equal button is clicked but I do not know how to
+                // do this properly since the calculator will append the wrong answer if the equal button is clicked, hence I let the equal button
+                // perform click as soon as one of the advanced operators are clicked
                 ButtonEqual.PerformClick();
                 operationPressed = true;
                 operation = b.Text;
-
             }
             operation = b.Text;
             result = double.Parse(TextDisplay.Text);
+
             operationPressed = true;
             num1 = TextDisplay.Text;
             if (b.Text != "")
             {
                 ButtonEqual.PerformClick();
             }
-
         }
-        #endregion
+
+        #endregion operations_Click
+
+        private void ButtonBackSpace_Click(object sender, EventArgs e)
+        {
+            // If the display text is greater than 0
+            if (TextDisplay.Text.Length > 0)
+            {
+                // Then remove the last button
+                TextDisplay.Text = TextDisplay.Text.Remove(TextDisplay.Text.Length - 1, 1);
+            }
+            // If all the numbers are removed with backspace then there should be a 0 shown
+            if (TextDisplay.Text == "")
+            {
+                TextDisplay.Text = "0";
+            }
+            // Enables all the button again
+            foreach (Button button in DisableEnable)
+            {
+                button.Enabled = true;
+            }
+            // If divide by zero exception but backspace is clicked then it will do the same as the clear button does
+            if (TextDisplay.Text.Contains("Cannot divide"))
+            {
+                ButtonC.PerformClick();
+            }
+        }
+
         private void ButtonCE_Click(object sender, EventArgs e)
         {
             // Clears entry
             TextDisplay.Text = "0";
             LabelEquation.Text = "";
+            // Enables all the button again
+            foreach (Button button in DisableEnable)
+            {
+                button.Enabled = true;
+            }
         }
 
         private void ButtonC_Click(object sender, EventArgs e)
         {
-            // Clears everything, the result will automatically be 0 and a new equation needs to be entered
+            // Clears everything, the result will automatically become 0 and a new equation can be started
             TextDisplay.Text = "0";
             result = 0;
             LabelEquation.Text = "";
+            // Enables all the button again
+            foreach (Button button in DisableEnable)
+            {
+                button.Enabled = true;
+            }
         }
 
         private void ButtonBin_Click(object sender, EventArgs e)
         {
             // Clears the history if the recycle bin is pressed
             HistoryBox.Clear();
-            // Since the recycle bin is cleared the label will be empty and thereafter we change the label into There's no history yet
+            // Since the recycle bin is cleared the label should show that there is no history
             if (LabelNoHistory.Text == "")
             {
                 LabelNoHistory.Text = "There's no history yet";
@@ -419,20 +519,16 @@ namespace Calc
             HistoryBox.ScrollBars = 0;
         }
 
-
         private void ButtonEqual_Click(object sender, EventArgs e)
         {
-            
             num2 = TextDisplay.Text;
-            operationPressed = false;
-            // What will be showed in the equation label
             LabelEquation.Text = result + " " + operation + " " + TextDisplay.Text + " =";
+            operationPressed = false;
+
             // Switch statement for every operation and the operations is taken from a separate class
-
-            // Region
-
-            #region switch statement
-
+            #region switch operations
+            // Creates local variable which gives access to the methods in the History class
+            History history = new History();
             switch (operation)
             {
                 case "+":
@@ -450,93 +546,127 @@ namespace Calc
                 case "/":
                     TextDisplay.Text = Operations.Div(result, double.Parse(TextDisplay.Text)).ToString();
                     break;
-
+                // Since all the advanced operations performs equal click then they show the operation performed
+                // All history.label... takes a label as an argument and this label should be the LabelEquation since in the histoy class
+                // we are basically asking "Which label should get this text appended" and we want the text appended to LabelEquation
+                // In the History class we have a double n1 which is the number that should be appended. For example if we want to calculate the sqrt(81)
+                // we want the labelequation to show that we calculated sqrt(81) and the the result display should show the 9.
+                // We also have double n2 which is equivalent of the operation. This mean that n2 is the result of an operation and should immedeatly show the answer of the operation
+                // histoy.text... is basically asking "where should we append text" and we want the text to append to the HistoryBox
                 case "√":
                     TextDisplay.Text = Operations.Sqrt(double.Parse(TextDisplay.Text)).ToString();
+                    // Shows the label equation
+                    history.LabelSqrt(LabelEquation, result);
+                    // Appends the entered equation to the history windows/textbox
+                    history.TextSqrt(HistoryBox, result);
                     break;
 
                 case "x²":
                     TextDisplay.Text = Operations.Pow(double.Parse(TextDisplay.Text)).ToString();
+                    // Shows the label equation, 
+                    history.LabelPow(LabelEquation, double.Parse(num2));
+                    // Appends the entered equation to the history windows/textbox
+                    history.TextPow(HistoryBox, double.Parse(num2));
                     break;
 
                 case "1/x":
                     TextDisplay.Text = Operations.OneThroughX(double.Parse(TextDisplay.Text)).ToString();
+                    // Shows the label equation
+                    history.LabelOneThroughX(LabelEquation, result);
+                    // Appends the entered equation to the history windows/textbox
+                    history.TextOneThroughX(HistoryBox, result);
                     break;
+
                 case "%":
                     TextDisplay.Text = Operations.Percent(double.Parse(TextDisplay.Text)).ToString();
+                    // Shows the label equation
+                    history.LabelPercent(LabelEquation, result);
+                    // Appends the entered equation to the history windows/textbox
+                    history.TextPercent(HistoryBox, result);
                     break;
 
                 default:
                     break;
             } // End of switch
-            #endregion operations
 
-            result = double.Parse(TextDisplay.Text);
+            #endregion switch operations
+
+            // new divide exception declared
+            DivideByZeroException ex = new DivideByZeroException("Cannot divide by zero");
+            // Needs to be here so the if statement within the try catch works
+            if (operation == "/" && num2 == null || num2 == "0")
+            {
+                // This needs to be here otherwise it will append the error message
+                // to the richtextbox/HistoryBox
+                LabelEquation.Text = num1;
+                // Without this line below the Display won't show the message in display
+                // when the exception is caught
+                TextDisplay.Text = ex.Message;
+                // Disables all buttons in the list if division with 0 was tried
+                // so those disabled buttons cannot be pressed which would lead to exception if an
+                // operation would be pressed
+                foreach (Button button in DisableEnable)
+                {
+                    button.Enabled = false;
+                }
+            }
+
+            // This if statement is here since all of these "basic operations" should
+            // append the same text and I did not want to write this in the class and
+            // in the switch statement, hence I created a else if statement
+            else if (operation == "+" || operation == "-" || operation == "x" || operation == "/")
+            {
+                HistoryBox.AppendText(LabelEquation.Text + "\n");
+                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
+            }
+
+            // Tries the result
+            try
+            {
+                result = double.Parse(TextDisplay.Text);
+            }
+            // Catch expection if result was wrong input
+            catch (Exception errorMessage)
+            {
+                /// <summary>
+                /// If the input was wrong and contains division then the texbox will
+                /// show Divide by zero expection.If division was tried then the exception
+                /// should be division exception and not the input string however the problem
+                /// is that I want to throw this in the if-statement above, if (operation == "/")
+                /// however if I throw an exception, the program will stop/break instead which is not what I want to achieve
+                /// I want the calculator to just display the divide exception message and not break, but I do not know how to do this so this is the work arund
+                /// </summary>
+                if (LabelEquation.Text.Contains("/"))
+                {
+                    TextDisplay.Text = ex.Message;
+                }
+                else
+                {
+                    TextDisplay.Text = errorMessage.Message;
+                }
+            }
 
             operation = "";
 
-            // Originally what I wanted is that if sqrt is pressed then the label will automatically do the following but I can't figure it out how, can't add it in the operations_click
-            // since we jump to line 423 as soon as sqrt is pressed
-            // if the equation contains sqrt symbol then it will append different text
-            if (LabelEquation.Text.Contains("√"))
-            { 
-                LabelEquation.Text = "√(" + num2 + ") =";
-                HistoryBox.AppendText(LabelEquation.Text + "\n");
-                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-                LabelNoHistory.Text = "";
-            }
-            else if (LabelEquation.Text.Contains("x²"))
-            {
-                LabelEquation.Text = LabelEquation.Text = "sqr(" + num2 + ") =";
-                HistoryBox.AppendText(LabelEquation.Text + "\n");
-                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-            }
-            else if (LabelEquation.Text.Contains("1/x"))
-            {
-                LabelEquation.Text = "1/(" + num2 + ") =";
-                HistoryBox.AppendText(LabelEquation.Text + "\n");
-                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-            }
-            else if (LabelEquation.Text.Contains("%"))
-            {
-                LabelEquation.Text = num2 + "/(100) =";
-                HistoryBox.AppendText(LabelEquation.Text + "\n");
-                HistoryBox.AppendText("\t" + TextDisplay.Text + "\n\n");
-            }
-            // Otherwise appends normal equation
-            else
-            {
-                HistoryBox.AppendText(num1 + " " + num2 + " " + " =" + "\n");
-                HistoryBox.AppendText(TextDisplay.Text + "\n\n");
-            }
             // Resets the result to 0 which leads to that result won't be stored all the time
             result = 0;
             // Since equal button is pressed then the history will append and you should be able to clear the history if you want to
             ButtonBin.Visible = true;
-
+            // Hides the text "There is no history yet"
             LabelNoHistory.Text = "";
         }
-        private void ButtonBackSpace_Click(object sender, EventArgs e)
-        {
-            // If the display text is greater than 0
-            if (TextDisplay.Text.Length > 0)
-            {
-                // Then remove the last button
-                TextDisplay.Text = TextDisplay.Text.Remove(TextDisplay.Text.Length - 1, 1);
-            }
-            // If all the numbers are removed with backspace then there should be a 0 showed
-            if (TextDisplay.Text == "")
-            {
-                TextDisplay.Text = "0";
-            }
-        }
-
 
         #region Keyboard inputs
 
         private void Buttons_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // What will be showed in the equation label
+            // Did if statement since keychar cannot be converted to string. Explicit casting
+            // the Keys.Enter
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                ButtonEqual.PerformClick();
+            }
+            // Needs to be converted to string since the cases are string
             switch (e.KeyChar.ToString())
             {
                 case "0":
@@ -600,6 +730,7 @@ namespace Calc
                     break;
 
                 case "=":
+                    ButtonEqual.PerformClick();
                     break;
 
                 default:
@@ -608,6 +739,5 @@ namespace Calc
         }
 
         #endregion Keyboard inputs
-
     }
 }
