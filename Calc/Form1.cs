@@ -23,6 +23,9 @@ namespace Calc
         // texbox after and appending new numbers to the textbox
         public bool operationPressed = false;
         public string num1, num2;
+        // Created this variable to see whether my if(operation == "/" && num2 = 0 || num2 = null) is working and this makes it possible for me to try whether the if-statement 
+        // actually is working or not
+        public bool DivisionWthZeroTried = false;
 
         public Form1()
         {
@@ -605,6 +608,7 @@ namespace Calc
                 // Disables all buttons in the list if division with 0 was tried
                 // so those disabled buttons cannot be pressed which would lead to exception if an
                 // operation would be pressed
+                DivisionWthZeroTried = true;
                 foreach (Button button in DisableEnable)
                 {
                     button.Enabled = false;

@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj": {}
+    "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj": {
+    "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj",
+        "projectUniqueName": "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj",
         "projectName": "Calc",
-        "projectPath": "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj",
-        "packagesPath": "C:\\Users\\ageke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\obj\\",
+        "projectPath": "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj",
+        "packagesPath": "C:\\Users\\Uroise\\.nuget\\packages\\",
+        "outputPath": "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ageke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Uroise\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -63,7 +67,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
