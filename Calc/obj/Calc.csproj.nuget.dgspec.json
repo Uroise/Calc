@@ -44,9 +44,17 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "AForge.Imaging": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
             "Microsoft.TestPlatform.TestHost": {
               "target": "Package",
               "version": "[17.1.0, )"
+            },
+            "moq": {
+              "target": "Package",
+              "version": "[4.17.2, )"
             }
           },
           "imports": [

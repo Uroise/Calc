@@ -16,16 +16,16 @@ namespace Calc
     public partial class Form1 : Form
     {
         public double result = 0;
+
         // Captures the operation that was pressed
         public string operation = "";
+
         // If we would enter 2 and then + the text would continue to append to the 2
         // that was entered before the operation instead of resetting the
         // texbox after and appending new numbers to the textbox
         public bool operationPressed = false;
+
         public string num1, num2;
-        // Created this variable to see whether my if(operation == "/" && num2 = 0 || num2 = null) is working and this makes it possible for me to try whether the if-statement 
-        // actually is working or not
-        public bool DivisionWthZeroTried = false;
 
         public Form1()
         {
@@ -336,23 +336,31 @@ namespace Calc
         #endregion Mouse enter/Mouse leave
 
         // Changes the current number to positive/negative number
+
         private void ChangeSign_Click(object sender, EventArgs e)
         {
             if (TextDisplay.Text != "0" || operationPressed)
             {
                 TextDisplay.Text = Operations.ChangeSign(double.Parse(TextDisplay.Text)).ToString();
             }
+
         }
+
+
+
+
         // Event for all numbers including dot
         private void Numbers_Click(object sender, EventArgs e)
         {
+            
             Button b = (Button)sender;
+            
             // If the display shows zero then the display will be cleared and if
             // an operation has been pressed then it determinates whether the textbox should be cleared
             if ((TextDisplay.Text == "0") || (operationPressed))
             {
                 TextDisplay.Clear();
-                TextDisplay.Text += TextDisplay.Text + b.Text;
+                TextDisplay.Text +=  b.Text;
                 operationPressed = false;
             }
             // Want to check if the text of the button is a decimal
@@ -386,6 +394,7 @@ namespace Calc
             // Takes focus none of the buttons will be focosed keyboard has been used
             LabelFocus.Focus();
         }
+    
 
         #region operations_Click
 
@@ -529,7 +538,9 @@ namespace Calc
             operationPressed = false;
 
             // Switch statement for every operation and the operations is taken from a separate class
+
             #region switch operations
+
             // Creates local variable which gives access to the methods in the History class
             History history = new History();
             switch (operation)
@@ -566,7 +577,7 @@ namespace Calc
 
                 case "x²":
                     TextDisplay.Text = Operations.Pow(double.Parse(TextDisplay.Text)).ToString();
-                    // Shows the label equation, 
+                    // Shows the label equation,
                     history.LabelPow(LabelEquation, double.Parse(num2));
                     // Appends the entered equation to the history windows/textbox
                     history.TextPow(HistoryBox, double.Parse(num2));
@@ -578,6 +589,7 @@ namespace Calc
                     history.LabelOneThroughX(LabelEquation, result);
                     // Appends the entered equation to the history windows/textbox
                     history.TextOneThroughX(HistoryBox, result);
+
                     break;
 
                 case "%":
@@ -606,9 +618,9 @@ namespace Calc
                 // when the exception is caught
                 TextDisplay.Text = ex.Message;
                 // Disables all buttons in the list if division with 0 was tried
-                // so those disabled buttons cannot be pressed which would lead to exception if an
-                // operation would be pressed
-                DivisionWthZeroTried = true;
+                // The disabled buttons cannot that where added to the list cannot be used unless something else,
+                // such as a number is pressed. The boolean variable DisableEnableButton is set to true which means
+                // that if this condition is met, the foreach shouuld work and show true in the UnitTest
                 foreach (Button button in DisableEnable)
                 {
                     button.Enabled = false;

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="17.1.0" />
+    <PackageReference Include="moq" Version="4.17.2" />
   </ItemGroup>
 
 </Project>

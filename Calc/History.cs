@@ -55,5 +55,7 @@ namespace Calc
             t.AppendText(n2 + "/(100) = \n");
             t.AppendText("\t" + historyResult + "\n\n");
         }
+
+
     }
 }
