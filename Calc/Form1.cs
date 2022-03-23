@@ -343,24 +343,19 @@ namespace Calc
             {
                 TextDisplay.Text = Operations.ChangeSign(double.Parse(TextDisplay.Text)).ToString();
             }
-
         }
-
-
-
 
         // Event for all numbers including dot
         private void Numbers_Click(object sender, EventArgs e)
         {
-            
             Button b = (Button)sender;
-            
+
             // If the display shows zero then the display will be cleared and if
             // an operation has been pressed then it determinates whether the textbox should be cleared
             if ((TextDisplay.Text == "0") || (operationPressed))
             {
                 TextDisplay.Clear();
-                TextDisplay.Text +=  b.Text;
+                TextDisplay.Text += b.Text;
                 operationPressed = false;
             }
             // Want to check if the text of the button is a decimal
@@ -394,7 +389,6 @@ namespace Calc
             // Takes focus none of the buttons will be focosed keyboard has been used
             LabelFocus.Focus();
         }
-    
 
         #region operations_Click
 
@@ -626,7 +620,6 @@ namespace Calc
                     button.Enabled = false;
                 }
             }
-
             // This if statement is here since all of these "basic operations" should
             // append the same text and I did not want to write this in the class and
             // in the switch statement, hence I created a else if statement
@@ -661,7 +654,6 @@ namespace Calc
                     TextDisplay.Text = errorMessage.Message;
                 }
             }
-
             operation = "";
 
             // Resets the result to 0 which leads to that result won't be stored all the time

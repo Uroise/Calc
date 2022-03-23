@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ageke\\source\\repos\\Calc\\CalcTest\\CalcTest.csproj": {}
+    "D:\\School\\Visual Studio\\Repos\\Calc\\CalcTest\\CalcTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ageke\\source\\repos\\Calc\\CalcTest\\CalcTest.csproj": {
+    "D:\\School\\Visual Studio\\Repos\\Calc\\CalcTest\\CalcTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ageke\\source\\repos\\Calc\\CalcTest\\CalcTest.csproj",
+        "projectUniqueName": "D:\\School\\Visual Studio\\Repos\\Calc\\CalcTest\\CalcTest.csproj",
         "projectName": "CalcTest",
-        "projectPath": "C:\\Users\\ageke\\source\\repos\\Calc\\CalcTest\\CalcTest.csproj",
-        "packagesPath": "C:\\Users\\ageke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ageke\\source\\repos\\Calc\\CalcTest\\obj\\",
+        "projectPath": "D:\\School\\Visual Studio\\Repos\\Calc\\CalcTest\\CalcTest.csproj",
+        "packagesPath": "C:\\Users\\Uroise\\.nuget\\packages\\",
+        "outputPath": "D:\\School\\Visual Studio\\Repos\\Calc\\CalcTest\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ageke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Uroise\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,8 +32,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj": {
-                "projectPath": "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj"
+              "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj": {
+                "projectPath": "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj"
               }
             }
           }
@@ -76,21 +80,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj": {
+    "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj",
+        "projectUniqueName": "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj",
         "projectName": "Calc",
-        "projectPath": "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\Calc.csproj",
-        "packagesPath": "C:\\Users\\ageke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ageke\\source\\repos\\Calc\\Calc\\obj\\",
+        "projectPath": "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\Calc.csproj",
+        "packagesPath": "C:\\Users\\Uroise\\.nuget\\packages\\",
+        "outputPath": "D:\\School\\Visual Studio\\Repos\\Calc\\Calc\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ageke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Uroise\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -115,6 +123,16 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.TestPlatform.TestHost": {
+              "target": "Package",
+              "version": "[17.1.0, )"
+            },
+            "moq": {
+              "target": "Package",
+              "version": "[4.17.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -133,7 +151,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
